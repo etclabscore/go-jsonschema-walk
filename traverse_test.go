@@ -1,4 +1,4 @@
-package jst
+package go_jsonschema_traverse
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/go-openapi/spec"
-	. "github.com/golang/mock/gomock"
 	_ "github.com/test-go/testify"
 )
 

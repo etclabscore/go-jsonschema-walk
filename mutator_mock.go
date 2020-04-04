@@ -2,7 +2,7 @@
 // Source: jst/mutator.go
 
 // Package jst is a generated GoMock package.
-package jst
+package go_jsonschema_traverse
 
 import (
 	reflect "reflect"

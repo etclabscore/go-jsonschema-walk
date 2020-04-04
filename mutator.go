@@ -1,4 +1,4 @@
-package jst
+package go_jsonschema_traverse
 
 import "github.com/go-openapi/spec"
 
