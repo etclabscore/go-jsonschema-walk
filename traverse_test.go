@@ -6,7 +6,8 @@ import (
 	"testing"
 
 	"github.com/go-openapi/spec"
-	_ "github.com/test-go/testify"
+	_ "github.com/stretchr/testify"
+	"github.com/golang/mock/gomock"
 )
 
 func BenchmarkJSONMarshalDeterminism(b *testing.B) {
@@ -55,7 +56,7 @@ type traverseTestOptions struct {
 func traverseTest(t *testing.T, prop string, options *traverseTestOptions, sch *spec.Schema, expectCallTotal int) {
 
 	runTest := func(a *AnalysisT, prop string, sch *spec.Schema, expectCallTotal int) {
-		testController := NewController(t)
+		testController := gomock.NewController(t)
 		mockMutator := NewMockMutator(testController)
 
 		mutatorCalledN := 0
