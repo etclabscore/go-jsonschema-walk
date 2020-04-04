@@ -8,7 +8,7 @@ require (
 	github.com/go-openapi/swag v0.19.8 // indirect
 	github.com/golang/mock v1.4.3
 	github.com/mailru/easyjson v0.7.1 // indirect
-	github.com/test-go/testify v1.1.4
+	github.com/stretchr/testify v1.3.0
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
