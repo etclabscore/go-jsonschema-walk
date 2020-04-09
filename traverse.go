@@ -1,4 +1,4 @@
-package go_jsonschema_traverse
+package go_jsonschema_walk
 
 import (
 	"encoding/json"
