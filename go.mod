@@ -1,4 +1,4 @@
-module github.com/etclabscore/go-jsonschema-traverse
+module github.com/etclabscore/go-jsonschema-walk
 
 go 1.13
 
