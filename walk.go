@@ -60,14 +60,14 @@ func schemasAreEquivalent(s1, s2 *spec.Schema) bool {
 	return reflect.DeepEqual(s1, s2)
 }
 
-// analysisOnNode runs a callback function on each leaf of a the JSON schema tree.
+// WalkDepthFirst runs a callback function on each leaf of a the JSON schema tree.
 // It will return the first error it encounters.
 func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Schema) error) error {
 
 	a.recurseIter++
 
 	if sch == nil {
-		return errors.New("traverse called on nil schema")
+		return errors.New("WalkDepthFirst called on nil schema")
 	}
 
 	// Keep a pristine copy of the value on the recurse stack.
