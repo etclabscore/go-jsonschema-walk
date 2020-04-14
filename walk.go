@@ -74,12 +74,6 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 	// The incoming pointer value will be mutated.
 	a.recursorStack = append(a.recursorStack, *mustReadSchema(mustWriteJSON(sch)))
 
-	final := func(s *spec.Schema) error {
-		err := onNode(s)
-		a.mutatedStack = append([]*spec.Schema{s}, a.mutatedStack...)
-		return err
-	}
-
 	// jsonschema slices.
 	for i := 0; i < len(sch.AnyOf); i++ {
 		err := a.WalkDepthFirst(&sch.AnyOf[i], onNode)
@@ -116,6 +110,13 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 			return err
 		}
 		sch.PatternProperties[k] = v
+	}
+
+	// little helper
+	final := func(s *spec.Schema) error {
+		err := onNode(s)
+		a.mutatedStack = append([]*spec.Schema{s}, a.mutatedStack...)
+		return err
 	}
 
 	// jsonschema special type
