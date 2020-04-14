@@ -82,24 +82,39 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 
 	// jsonschema slices.
 	for i := 0; i < len(sch.AnyOf); i++ {
-		a.WalkDepthFirst(&sch.AnyOf[i], onNode)
+		err := a.WalkDepthFirst(&sch.AnyOf[i], onNode)
+		if err != nil {
+			return err
+		}
 	}
 	for i := 0; i < len(sch.AllOf); i++ {
-		a.WalkDepthFirst(&sch.AllOf[i], onNode)
+		err := a.WalkDepthFirst(&sch.AllOf[i], onNode)
+		if err != nil {
+			return err
+		}
 	}
 	for i := 0; i < len(sch.OneOf); i++ {
-		a.WalkDepthFirst(&sch.OneOf[i], onNode)
+		err := a.WalkDepthFirst(&sch.OneOf[i], onNode)
+		if err != nil {
+			return err
+		}
 	}
 
 	// jsonschemama maps
 	for k := range sch.Properties {
 		v := sch.Properties[k]
-		a.WalkDepthFirst(&v, onNode)
+		err := a.WalkDepthFirst(&v, onNode)
+		if err != nil {
+			return err
+		}
 		sch.Properties[k] = v
 	}
 	for k := range sch.PatternProperties {
 		v := sch.PatternProperties[k]
-		a.WalkDepthFirst(&v, onNode)
+		err := a.WalkDepthFirst(&v, onNode)
+		if err != nil {
+			return err
+		}
 		sch.PatternProperties[k] = v
 	}
 
@@ -109,10 +124,16 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 	}
 
 	if sch.Items.Schema != nil {
-		a.WalkDepthFirst(sch.Items.Schema, onNode)
+		err := a.WalkDepthFirst(sch.Items.Schema, onNode)
+		if err != nil {
+			return err
+		}
 	} else {
 		for i := range sch.Items.Schemas {
-			a.WalkDepthFirst(&sch.Items.Schemas[i], onNode)
+			err := a.WalkDepthFirst(&sch.Items.Schemas[i], onNode)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
