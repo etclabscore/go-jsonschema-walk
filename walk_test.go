@@ -1,4 +1,4 @@
-package go_jsonschema_walk
+package walk
 
 import (
 	"fmt"
