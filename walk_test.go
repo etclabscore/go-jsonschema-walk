@@ -220,7 +220,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 		}, mustReadSchema(`{"properties": {"a": {}, "b": {}}}`))
 	})
 
-	t.Run("cycle detection", func(t *testing.T) {
+	t.Run("nests", func(t *testing.T) {
 
 		// Expect that
 		runTraverseTestWithOptsExpect(t, "basic", traverseTestsOptsExpect{
@@ -371,7 +371,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 			return s
 		}())
 
-		runTraverseTestWithOptsExpect(t, "multiple cycles", traverseTestsOptsExpect{
+		runTraverseTestWithOptsExpect(t, "multiple nests", traverseTestsOptsExpect{
 			pint(8): nil,
 			pint(6): uniqueOpts,
 		}, func() *spec.Schema {
