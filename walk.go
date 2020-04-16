@@ -60,14 +60,14 @@ func schemasAreEquivalent(s1, s2 *spec.Schema) bool {
 	return reflect.DeepEqual(s1, s2)
 }
 
-// WalkDepthFirst runs a callback function on each leaf of a the JSON schema tree.
+// DepthFirst runs a mutating callback function on each node of a JSON schema graph.
 // It will return the first error it encounters.
-func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Schema) error) error {
+func (a *AnalysisT) DepthFirst(sch *spec.Schema, onNode func(node *spec.Schema) error) error {
 
 	a.recurseIter++
 
 	if sch == nil {
-		return errors.New("WalkDepthFirst called on nil schema")
+		return errors.New("DepthFirst called on nil schema")
 	}
 
 	// Keep a pristine copy of the value on the recurse stack.
@@ -76,19 +76,19 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 
 	// jsonschema slices.
 	for i := 0; i < len(sch.AnyOf); i++ {
-		err := a.WalkDepthFirst(&sch.AnyOf[i], onNode)
+		err := a.DepthFirst(&sch.AnyOf[i], onNode)
 		if err != nil {
 			return err
 		}
 	}
 	for i := 0; i < len(sch.AllOf); i++ {
-		err := a.WalkDepthFirst(&sch.AllOf[i], onNode)
+		err := a.DepthFirst(&sch.AllOf[i], onNode)
 		if err != nil {
 			return err
 		}
 	}
 	for i := 0; i < len(sch.OneOf); i++ {
-		err := a.WalkDepthFirst(&sch.OneOf[i], onNode)
+		err := a.DepthFirst(&sch.OneOf[i], onNode)
 		if err != nil {
 			return err
 		}
@@ -97,7 +97,7 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 	// jsonschemama maps
 	for k := range sch.Properties {
 		v := sch.Properties[k]
-		err := a.WalkDepthFirst(&v, onNode)
+		err := a.DepthFirst(&v, onNode)
 		if err != nil {
 			return err
 		}
@@ -105,7 +105,7 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 	}
 	for k := range sch.PatternProperties {
 		v := sch.PatternProperties[k]
-		err := a.WalkDepthFirst(&v, onNode)
+		err := a.DepthFirst(&v, onNode)
 		if err != nil {
 			return err
 		}
@@ -125,13 +125,13 @@ func (a *AnalysisT) WalkDepthFirst(sch *spec.Schema, onNode func(node *spec.Sche
 	}
 
 	if sch.Items.Schema != nil {
-		err := a.WalkDepthFirst(sch.Items.Schema, onNode)
+		err := a.DepthFirst(sch.Items.Schema, onNode)
 		if err != nil {
 			return err
 		}
 	} else {
 		for i := range sch.Items.Schemas {
-			err := a.WalkDepthFirst(&sch.Items.Schemas[i], onNode)
+			err := a.DepthFirst(&sch.Items.Schemas[i], onNode)
 			if err != nil {
 				return err
 			}

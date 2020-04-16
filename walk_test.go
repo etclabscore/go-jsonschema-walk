@@ -69,7 +69,7 @@ func traverseTest(t *testing.T, prop string, options *traverseTestOptions, sch *
 		registryUniq := make(map[string]*spec.Schema)
 		registryDupe := make(map[string]*spec.Schema)
 		if options.UniqueOnly {
-			a.WalkDepthFirst(sch, func(s *spec.Schema) error {
+			a.DepthFirst(sch, func(s *spec.Schema) error {
 				// If the key already exist in the registry
 				k := mustWriteJSON(s)
 				if _, ok := registryUniq[k]; ok {
@@ -82,7 +82,7 @@ func traverseTest(t *testing.T, prop string, options *traverseTestOptions, sch *
 			})
 		}
 
-		a.WalkDepthFirst(sch, func(s *spec.Schema) error {
+		a.DepthFirst(sch, func(s *spec.Schema) error {
 			if options.UniqueOnly {
 				_, ok := registryUniq[mustWriteJSON(s)]
 				if !ok {
@@ -429,7 +429,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 		fmt.Printf("mutation test '%s' Before @schema=\n%s\n", domain, mustWriteJSONIndent(s))
 
 		a := newAnalyst()
-		a.WalkDepthFirst(s, mut)
+		a.DepthFirst(s, mut)
 		fmt.Printf("mutation test '%s' After @schema=\n%s\n", domain, mustWriteJSONIndent(s))
 
 		// Checks.
@@ -545,7 +545,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 		a := NewAnalysisT()
 
 		// Pass 1: Collect the dictionaries of unique and duped schemas for the whole graph.
-		a.WalkDepthFirst(anyOfSchema2, descriptionMutatorCollectUniq)
+		a.DepthFirst(anyOfSchema2, descriptionMutatorCollectUniq)
 
 		// Pass 2: Run the mutation test using the -IfUniq mutator, expecting that
 		// only schemas identified in Pass 1 as unique will be mutated.
@@ -627,7 +627,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 
 		registry := make(map[string]*spec.Schema)
 
-		a.WalkDepthFirst(s, func(s *spec.Schema) error {
+		a.DepthFirst(s, func(s *spec.Schema) error {
 			registry[mustWriteJSON(s)] = s
 			return nil
 		})
@@ -661,7 +661,7 @@ func TestAnalysisT_WalkDepthFirst1(t *testing.T) {
 		s := mustReadSchema(raw)
 		a := NewAnalysisT()
 
-		a.WalkDepthFirst(s, func(node *spec.Schema) error {
+		a.DepthFirst(s, func(node *spec.Schema) error {
 			node.Description = "touched"
 			return nil
 		})
