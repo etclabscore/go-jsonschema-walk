@@ -17,6 +17,8 @@ func errYesCycleNo(err error) bool {
 	return err != nil && err != errCycle
 }
 
+// Walker manages the contextual state of a jsonschema walk,
+// acting as the receiver for the walk methods.
 type Walker struct {
 	iter     int
 	depth    int
@@ -32,6 +34,7 @@ func (w *Walker) cycles() []cycle {
 	return w.cycle
 }
 
+// NewWalker returns a new Walker.
 func NewWalker() *Walker {
 	return &Walker{
 		depth:    -1,
